@@ -1,0 +1,22 @@
+server:
+  contextPath: /helpdesk
+  port: 8080
+  session:
+    persistent: false
+    timeout: 600
+
+logging:
+  file: ../log/helpdeskapp.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    file: "d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} : %msg%n"
+  level:
+
+hibernate:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/sample?useSSL=false
+  username: root
+  password: 19922003
+  showSql: true
+  ddlAuto: update
+  dialect: org.hibernate.dialect.MySQL5InnoDBDialect

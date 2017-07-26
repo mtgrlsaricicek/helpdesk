@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="app" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <script type="text/javascript"
+            src="webjars/jquery/2.1.4/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css"
+          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="webjars/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+    <script type="text/javascript"
+            src="webjars/angularjs/1.4.9/angular.js"></script>
+
+    <script type="text/javascript"
+            src="webjars/angularjs/1.4.9/angular-route.js"></script>
+
+    <script type="text/javascript"
+            src="webjars/angularjs/1.4.9/angular-resource.js"></script>
+
+    <script type="text/javascript"
+            src="js/script.js"></script>
+
+
+    <title>Title</title>
+</head>
+<body ng-controller="mainController">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#home">
+                    <i class="fa fa-home"></i> HelpDesk Application</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="#helpRequest"><i class="fa fa-question-circle-o"></i> Çağrı Talebi</a></li>
+                <li><a href="#queryHelpRequest"><i class="fa fa-search"></i> Çağrı Sorgulama</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#about"><i class="fa fa-shield"></i> Hakkında</a></li>
+                <li><a href="#login"><i class="fa fa-user-o"></i> Panel Giriş</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="main">
+        <div ng-view="true"></div>
+    </div>
+</body>
+</html>

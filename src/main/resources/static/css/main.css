@@ -1,0 +1,17 @@
+h1{
+	color:#0000FF;
+}
+
+h2{
+	color:#FF0000;
+}
+
+header{
+    margin-top:60px;
+}
+
+.panel-primary > .panel-heading-custom{
+  background-image: none;
+  background-color: #cf5b95;
+  color: #ffffff;
+}
