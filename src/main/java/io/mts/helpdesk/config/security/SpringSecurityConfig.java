@@ -1,6 +1,7 @@
 package io.mts.helpdesk.config.security;
 
 import io.mts.helpdesk.component.authsuccesshandler.SimpleAuthSuccessHandler;
+import io.mts.helpdesk.component.logoutsuccess.LogoutSuccess;
 import io.mts.helpdesk.hibernate.dao.userDao.AppUserDetailService;
 import io.mts.helpdesk.util.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Created by mtugrulsaricicek on 26.07.2017.
@@ -24,27 +27,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     SimpleAuthSuccessHandler successHandler;
 
+    @Autowired
+    LogoutSuccess logoutSuccess;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable()
+        http
+                .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/","/home","/about","/webjars/**","/css/**","/js/**")
+                .antMatchers("/index.html","/pages/**","/","/webjars/**")
                 .permitAll()
-                .antMatchers("/admin/**")
-                .hasAnyAuthority(Role.ADMIN.toString())
-                .antMatchers("/teamLead/**")
-                .hasAnyAuthority(Role.TEAM_LEAD.toString()
-                            , Role.ADMIN.toString())
-                .antMatchers("/technician").hasAnyAuthority(Role.TEAM_LEAD.toString()
-                                                                  , Role.ADMIN.toString(),
-                                                                    Role.TECHNICIAN.toString())
+                .anyRequest()
+                .authenticated().and().logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .permitAll()
+                .logoutSuccessHandler(logoutSuccess)
+                .deleteCookies("JSESSIONID").invalidateHttpSession(true)
                 .and()
-                .formLogin().loginPage("/login").successHandler(successHandler)
-                                                .failureForwardUrl("/loginFailed")
-                                                .loginProcessingUrl("/login").permitAll()
-                .and()
-                .logout().logoutSuccessUrl("/").permitAll();
+                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
 
     }
 

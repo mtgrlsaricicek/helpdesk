@@ -23,7 +23,9 @@
             src="webjars/angularjs/1.4.9/angular-resource.js"></script>
 
     <script type="text/javascript"
-            src="js/script.js"></script>
+            src="js/app.js"></script>
+
+
 
 
     <title>Title</title>
@@ -42,7 +44,8 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#about"><i class="fa fa-shield"></i> Hakkında</a></li>
-                <li><a href="#login"><i class="fa fa-user-o"></i> Panel Giriş</a></li>
+                <li ng-show="!authenticated"><a href="#login"><i class="fa fa-sign-in"></i> Panel Giriş</a></li>
+                <li ng-show="authenticated"><a href="" ng-click="logout()"><i class="fa fa-sign-out"></i> Çıkış</a></li>
             </ul>
         </div>
     </nav>
