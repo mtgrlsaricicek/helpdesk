@@ -1,10 +1,19 @@
 
-var app = angular.module('app', ['ngRoute']);
+var app = angular.module('app', ['ngRoute','ngMaterial','ngMessages']);
+
+app.factory('sidenavCloseService',function($mdSidenav){
+    return {
+        closeIfOpen : function(){
+            var sidenav = $mdSidenav('left');
+            if(sidenav.isOpen()){
+                sidenav.close();
+            }
+        }
+    }
+});
 
 app.config(function($routeProvider,$httpProvider) {
             $routeProvider
-
-                // route for the home page
                 .when('/', {
                     templateUrl : 'pages/home.html',
                     controller  : 'navigation'
@@ -39,14 +48,20 @@ app.config(function($routeProvider,$httpProvider) {
 
 
 
-app.controller('aboutController', function($scope) {
+app.controller('aboutController',['$scope','sidenavCloseService',
+                        function($scope,sidenavCloseService) {
+    sidenavCloseService.closeIfOpen();
     $scope.message = 'This page is in the process of preparation';
-});
+}]);
 
-app.controller('helpRequestController', function($scope) {
+app.controller('helpRequestController',['$scope','sidenavCloseService',
+                        function($scope,sidenavCloseService) {
+     sidenavCloseService.closeIfOpen();
      $scope.message = 'This page is in the process of preparation';
- });
+ }]);
 
-app.controller('helpQueryController', function($scope) {
+app.controller('helpQueryController',['$scope','sidenavCloseService',
+                        function($scope,sidenavCloseService) {
+     sidenavCloseService.closeIfOpen();
      $scope.message = 'This page is in the process of preparation';
- });
+ }]);

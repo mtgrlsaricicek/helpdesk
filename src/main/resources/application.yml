@@ -20,3 +20,9 @@ hibernate:
   showSql: true
   ddlAuto: update
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    content-type: text/html
+    encoding: UTF-8

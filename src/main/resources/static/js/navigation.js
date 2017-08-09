@@ -1,5 +1,9 @@
-app.controller('navigation', function($rootScope, $scope, $http, $location) {
+app.controller('navigation',['$rootScope','$scope','$http','$location',
+                             '$mdSidenav','$timeout','sidenavCloseService',
+                function($rootScope,$scope,
+                        $http,$location,$mdSidenav,$timeout,sidenavCloseService) {
 
+        sidenavCloseService.closeIfOpen();
 
       var authenticate = function(credentials, callback) {
 
@@ -33,17 +37,61 @@ app.controller('navigation', function($rootScope, $scope, $http, $location) {
               $scope.error = true;
             }
           });
-      };
-
-      $scope.logout = function() {
-        $http.post('logout').success(function() {
-          $rootScope.authenticated = false;
-          $location.path("/home");
-        }).error(function(data) {
-          $rootScope.authenticated = false;
-        });
       }
 
+       $scope.logout = function() {
+              $http.post('logout').success(function() {
+                $rootScope.authenticated = false;
+                $location.path("/");
+              }).error(function(data) {
+                $rootScope.authenticated = false;
+              });
+            }
+
+            $scope.toggleLeft = buildDelayedToggler('left');
+
+                   /**
+                    * Supplies a function that will continue to operate until the
+                    * time is up.
+                    */
+                   function debounce(func, wait, context) {
+                     var timer;
+
+                     return function debounced() {
+                       var context = $scope,
+                           args = Array.prototype.slice.call(arguments);
+                       $timeout.cancel(timer);
+                       timer = $timeout(function() {
+                         timer = undefined;
+                         func.apply(context, args);
+                       }, wait || 10);
+                     };
+                   }
+
+                   /**
+                    * Build handler to open/close a SideNav; when animation finishes
+                    * report completion in console
+                    */
+                   function buildDelayedToggler(navID) {
+                     return debounce(function() {
+                       // Component lookup should always be available since we are not using `ng-if`
+                       $mdSidenav(navID)
+                         .toggle();
+                     }, 200);
+                   }
+
+                   function buildToggler(navID) {
+                     return function() {
+                       // Component lookup should always be available since we are not using `ng-if`
+                       $mdSidenav(navID)
+                         .toggle();
+                     };
+                   }
+
+       $scope.go = function(path){
+            sidenavCloseService.closeIfOpen();
+            $location.path(path);
+       }
 
 
-});
+}]);

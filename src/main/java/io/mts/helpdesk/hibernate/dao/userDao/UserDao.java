@@ -26,7 +26,9 @@ public class UserDao extends BaseDao<User> {
     public Optional<User> findByUsername(String userName){
         currentSession().beginTransaction();
         Criteria criteria = currentSession().createCriteria(User.class);
-        criteria.add(Restrictions.eq("email",userName));
+        criteria.add(Restrictions.and(Restrictions.eq("email",userName),
+                     Restrictions.eq("active",true)
+        ));
         Optional<User> user = Optional.ofNullable(uniqueResult(criteria));
         currentSession().getTransaction().commit();
         return user;
