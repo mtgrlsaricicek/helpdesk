@@ -5,39 +5,44 @@ app.controller('navigation',['$rootScope','$scope','$http','$location',
 
         sidenavCloseService.closeIfOpen();
 
-      var authenticate = function(credentials, callback) {
-
-        var headers = credentials ? {authorization : "Basic "
-            + btoa(credentials.username + ":" + credentials.password)
-        } : {};
-
-        $http.get('user', {headers : headers}).success(function(data) {
-          if (data.name) {
-            $rootScope.authenticated = true;
-          } else {
+      var authenticate = function(callback) {
+          $http.get('user').success(function(data) {
+            if (data.name) {
+              $rootScope.authenticated = true;
+            } else {
+              $rootScope.authenticated = false;
+            }
+            callback && callback();
+          }).error(function() {
             $rootScope.authenticated = false;
-          }
-          callback && callback();
-        }).error(function() {
-          $rootScope.authenticated = false;
-          callback && callback();
-        });
-
-      }
+            callback && callback();
+          });
+        }
 
       authenticate();
       $scope.credentials = {};
+      authenticate();
       $scope.login = function() {
-          authenticate($scope.credentials, function() {
-            if ($rootScope.authenticated) {
-              $location.path("/home");
-              $scope.error = false;
-            } else {
-              $location.path("/login");
-              $scope.error = true;
-            }
-          });
-      }
+         $http.post('login', $.param($scope.credentials), {
+           headers : {
+             "content-type" : "application/x-www-form-urlencoded"
+           }
+         }).success(function(data) {
+            authenticate(function() {
+              if ($rootScope.authenticated) {
+                $location.path("/");
+                $scope.error = false;
+              } else {
+                $location.path("/login");
+                $scope.error = true;
+              }
+            });
+         }).error(function(data) {
+           $location.path("/login");
+           $scope.error = true;
+           $rootScope.authenticated = false;
+         })
+       }
 
        $scope.logout = function() {
               $http.post('logout').success(function() {
