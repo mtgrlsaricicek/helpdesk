@@ -13,40 +13,40 @@ app.factory('sidenavCloseService',function($mdSidenav){
 });
 
 app.config(function($routeProvider,$httpProvider) {
-            $routeProvider
-                .when('/', {
-                    templateUrl : 'commonPages/home.html',
-                    controller  : 'navigation'
-                })
-                .when('/home', {
-                    templateUrl : 'commonPages/home.html',
-                    controller  : 'navigation'
-                                })
-                .when('/about', {
-                    templateUrl : 'commonPages/about.html',
-                    controller  : 'aboutController'
-                })
+       $routeProvider
+           .when('/', {
+               templateUrl : 'commonPages/home.html',
+               controller  : 'navigation'
+           })
+           .when('/home', {
+               templateUrl : 'commonPages/home.html',
+               controller  : 'navigation'
+                           })
+           .when('/about', {
+               templateUrl : 'commonPages/about.html',
+               controller  : 'aboutController'
+           })
 
-                // route for the login page
-                .when('/login', {
-                    templateUrl : 'commonPages/login.html',
-                    controller  : 'navigation'
-                })
-                .when('/helpRequest', {
-                    templateUrl : 'commonPages/helpRequest.html',
-                    controller  : 'helpRequestController'
-                })
-                .when('/queryHelpRequest', {
-                    templateUrl : 'commonPages/helpQueryPage.html',
-                    controller  : 'helpQueryController'
-                }).when('/userRegister', {
-                    templateUrl : 'commonUserPages/userRegister.html',
-                    controller  : 'userRegisterController'
-                });
-                $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-                $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
-                $httpProvider.interceptors.push('CsrfTokenInterceptorService');
-        });
+           // route for the login page
+           .when('/login', {
+               templateUrl : 'commonPages/login.html',
+               controller  : 'navigation'
+           })
+           .when('/helpRequest', {
+               templateUrl : 'commonPages/helpRequest.html',
+               controller  : 'helpRequestController'
+           })
+           .when('/queryHelpRequest', {
+               templateUrl : 'commonPages/helpQueryPage.html',
+               controller  : 'helpQueryController'
+           }).when('/userRegister', {
+               templateUrl : 'commonUserPages/userRegister.html',
+               controller  : 'userRegisterController'
+           });
+           $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+           $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
+           $httpProvider.interceptors.push('CsrfTokenInterceptorService');
+});
 
 
 
