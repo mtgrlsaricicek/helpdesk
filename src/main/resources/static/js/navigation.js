@@ -1,14 +1,16 @@
 app.controller('navigation',['$rootScope','$scope','$http','$location',
-                             '$mdSidenav','$timeout','sidenavCloseService',
+                             '$mdSidenav','$timeout','$window','sidenavCloseService',
                 function($rootScope,$scope,
-                        $http,$location,$mdSidenav,$timeout,sidenavCloseService) {
+                        $http,$location,$mdSidenav,$timeout,$window,sidenavCloseService) {
 
         sidenavCloseService.closeIfOpen();
 
       var authenticate = function(callback) {
-          $http.get('user').success(function(data) {
+          $http.get('user/getCurrentUser').success(function(data) {
             if (data.name) {
               $rootScope.authenticated = true;
+              $rootScope.name = data.name;
+              $rootScope.surname = data.surname;
             } else {
               $rootScope.authenticated = false;
             }
@@ -19,7 +21,6 @@ app.controller('navigation',['$rootScope','$scope','$http','$location',
           });
         }
 
-      authenticate();
       $scope.credentials = {};
       authenticate();
       $scope.login = function() {
@@ -30,8 +31,8 @@ app.controller('navigation',['$rootScope','$scope','$http','$location',
          }).success(function(data) {
             authenticate(function() {
               if ($rootScope.authenticated) {
-                $location.path("/");
                 $scope.error = false;
+                $window.location = "http://localhost:8080/helpdesk/";
               } else {
                 $location.path("/login");
                 $scope.error = true;
@@ -45,11 +46,13 @@ app.controller('navigation',['$rootScope','$scope','$http','$location',
        }
 
        $scope.logout = function() {
+              sidenavCloseService.closeIfOpen()
               $http.post('logout').success(function() {
                 $rootScope.authenticated = false;
-                $location.path("/");
+                $window.location = "http://localhost:8080/helpdesk/"
               }).error(function(data) {
                 $rootScope.authenticated = false;
+                $window.location = "http://localhost:8080/helpdesk/"
               });
             }
 

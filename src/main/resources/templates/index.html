@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app" xmlns="http://www.w3.org/1999/xhtml">
+<html ng-app="app" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <script type="text/javascript"
@@ -47,6 +47,9 @@
     <script type="text/javascript"
             src="js/sidenav.js"></script>
 
+    <script type="text/javascript"
+            src="js/userRegister.js"></script>
+
 
 
 
@@ -65,6 +68,11 @@
                 </div>
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#home">HelpDeskApplication</a>
+                </div>
+
+                <div class="navbar-header pull-right"
+                     sec:authorize="hasAuthority('ADMIN')">
+                    <i class="fa fa-user"> {{ name }} {{surname }}</i>
                 </div>
 
             </div><!-- /.container-fluid -->
@@ -106,6 +114,15 @@
                             <i class="fa fa-sign-in"> Panel Giriş</i>
                         </md-button>
                 </md-content>
+
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <md-content layout-padding>
+                        <md-button ng-click="go('/userRegister')"
+                                   class="md-primary" hide-gt-md>
+                            <i class="fa fa-user"> Kullanıcı Ekle</i>
+                        </md-button>
+                    </md-content>
+                </div>
 
                 <md-content  ng-show="authenticated" layout-padding>
                     <md-button ng-click="logout()"

@@ -15,30 +15,33 @@ app.factory('sidenavCloseService',function($mdSidenav){
 app.config(function($routeProvider,$httpProvider) {
             $routeProvider
                 .when('/', {
-                    templateUrl : 'pages/home.html',
+                    templateUrl : 'commonPages/home.html',
                     controller  : 'navigation'
                 })
                 .when('/home', {
-                    templateUrl : 'pages/home.html',
+                    templateUrl : 'commonPages/home.html',
                     controller  : 'navigation'
                                 })
                 .when('/about', {
-                    templateUrl : 'pages/about.html',
+                    templateUrl : 'commonPages/about.html',
                     controller  : 'aboutController'
                 })
 
                 // route for the login page
                 .when('/login', {
-                    templateUrl : 'pages/login.html',
+                    templateUrl : 'commonPages/login.html',
                     controller  : 'navigation'
                 })
                 .when('/helpRequest', {
-                    templateUrl : 'pages/helpRequest.html',
+                    templateUrl : 'commonPages/helpRequest.html',
                     controller  : 'helpRequestController'
                 })
                 .when('/queryHelpRequest', {
-                    templateUrl : 'pages/helpQueryPage.html',
+                    templateUrl : 'commonPages/helpQueryPage.html',
                     controller  : 'helpQueryController'
+                }).when('/userRegister', {
+                    templateUrl : 'commonUserPages/userRegister.html',
+                    controller  : 'userRegisterController'
                 });
                 $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
                 $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';

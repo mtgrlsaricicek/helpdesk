@@ -22,6 +22,19 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
+    private static String[] commonUrls = {"/index.html",
+                                          "/commonPages/**",
+                                          "/",
+                                          "/webjars/**"};
+
+    private static String[] commonUsersUrls = {"/commonUserPages/**","user/**"};
+
+    private static  String[] adminUrl = {};
+
+    private static String[]  teamLeadUrls = {};
+
+    private static String[]  technicianUrl = {};
+
     @Autowired
     AppUserDetailService userDetailService;
 
@@ -43,11 +56,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/index.html",
-                        "/pages/**",
-                        "/",
-                        "/webjars/**")
+                .antMatchers(commonUrls)
                 .permitAll();
+        http.authorizeRequests().antMatchers(commonUsersUrls)
+                .hasAnyAuthority("ADMIN","TEAM_LEAD","TECHNICIAN");
+        http.authorizeRequests().antMatchers(adminUrl).hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers(teamLeadUrls).hasAnyAuthority("ADMIN","TEAM_LEAD");
+        http.authorizeRequests().antMatchers(technicianUrl).hasAnyAuthority("ADMIN","TEAM_LEAD","TECHNICIAN");
         http
                 .formLogin().loginProcessingUrl("/login").permitAll()
                 .failureHandler(authFailureHandler).successHandler(successHandler);
